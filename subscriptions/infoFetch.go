@@ -68,3 +68,14 @@ func GetTransactionDetails(txhash []byte) (*ctypes.ResultTx, error) {
 	// log.Println(txResult, err)
 	return txResult, err
 }
+
+func GetPrevBlockDetails(height int64) (*ctypes.ResultBlock, error) {
+	height = height - 1
+
+	// Create blank context (Top level)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	blockDetails, err := Client.Block(ctx, &height)
+	return blockDetails, err
+}

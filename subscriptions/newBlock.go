@@ -42,7 +42,12 @@ func handleNewBlockEvent(block <-chan coretypes.ResultEvent) {
 		//log.Println("new block")
 		// Parse block data
 		data, _ := val.Data.(tenderminttypes.EventDataNewBlock)
-		txs := data.Block.Data.Txs
+		blockDetails, err := GetPrevBlockDetails(data.Block.Height)
+		if err != nil {
+			log.Println(err)
+		}
+
+		txs := blockDetails.Block.Data.Txs
 
 		for _, tx := range txs {
 			// log.Println("tx ", txhash)
